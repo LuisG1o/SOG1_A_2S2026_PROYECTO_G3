@@ -19,14 +19,14 @@ Este respaldo contiene los **30 productos catalogados**, **imágenes**, existenc
 
 ## Procedimiento de Restauración (Desde Ubuntu Server)
 
-### 1. Clonar la rama `develop` del repositorio
+### 1. Clonar el repositorio
 
 Entra a la terminal de tu máquina virtual Ubuntu Server y descarga los archivos del repositorio:
 
 ```bash
 cd ~
-git clone -b develop [https://github.com/Normis77/Geren1_Proyecto1_G3.git](https://github.com/Normis77/Geren1_Proyecto1_G3.git)
-cd Geren1_Proyecto1_G3
+git clone https://github.com/LuisG1o/SOG1_A_2S2026_PROYECTO_G3.git
+cd SOG1_A_2S2026_PROYECTO_G3
 ```
 
 ---
@@ -35,7 +35,7 @@ cd Geren1_Proyecto1_G3
 
 1. Copia el archivo `.dump` dentro del contenedor de base de datos:
    ```bash
-   sudo docker cp backup_raiz_artesanal.dump odoo-erp_db_1:/tmp/backup_raiz_artesanal.dump
+   sudo docker cp Base_de_Datos/backup_raiz_artesanal.dump odoo-erp_db_1:/tmp/backup_raiz_artesanal.dump
    ```
 
 2. Crea la base de datos de destino `raiz_artesanal_db`:
@@ -58,7 +58,7 @@ Para que todos los productos e iconos muestren sus fotografías en la interfaz w
 
 1. Descomprime el archivo de imágenes:
    ```bash
-   tar -xzf filestore_backup.tar.gz
+   tar -xzf Base_de_Datos/filestore_backup.tar.gz
    ```
 
 2. Copia la carpeta de imágenes dentro del contenedor web de Odoo (reemplaza `odoo-erp_web_1` por el nombre o `CONTAINER ID` de tu contenedor de Odoo que viste en `sudo docker ps`[cite: 6, 8]) y asigna permisos:
@@ -83,17 +83,17 @@ Para que todos los productos e iconos muestren sus fotografías en la interfaz w
 
 ## Base de datos final de la Fase 2
 
-Los archivos `backup_raiz_artesanal_final.dump` y `filestore_final.tar.gz` contienen el sistema completo de la Fase 2: datos maestros, compras (BO00002, P00025 a P00028), ventas (S00025 y S00026), factura INV/2026/00005, CRM con 5 oportunidades y las 2 campañas de correo enviadas. La empresa está configurada como **Raíz Artesanal** con su logotipo.
+Los archivos `Base_de_Datos/backup_raiz_artesanal_final.dump` y `Base_de_Datos/filestore_final.tar.gz` contienen el sistema completo de la Fase 2: datos maestros, compras (BO00002, P00025 a P00028), ventas (S00025 y S00026), factura INV/2026/00005, CRM con 5 oportunidades y las 2 campañas de correo enviadas. La empresa está configurada como **Raíz Artesanal** con su logotipo.
 
 Se restaura con los mismos pasos 2 y 3 anteriores, usando estos archivos:
 
 ```bash
 sudo docker compose up -d
-sudo docker cp backup_raiz_artesanal_final.dump odoo-erp_db_1:/tmp/final.dump
+sudo docker cp Base_de_Datos/backup_raiz_artesanal_final.dump odoo-erp_db_1:/tmp/final.dump
 sudo docker exec -t odoo-erp_db_1 dropdb -U odoo --if-exists raiz_artesanal_db
 sudo docker exec -t odoo-erp_db_1 createdb -U odoo raiz_artesanal_db
 sudo docker exec -t odoo-erp_db_1 pg_restore -U odoo -d raiz_artesanal_db --no-owner /tmp/final.dump
-tar -xzf filestore_final.tar.gz
+tar -xzf Base_de_Datos/filestore_final.tar.gz
 sudo docker cp filestore_backup/. odoo-erp_web_1:/var/lib/odoo/filestore/
 sudo docker exec -u root -t odoo-erp_web_1 chown -R odoo:odoo /var/lib/odoo/filestore
 ```
