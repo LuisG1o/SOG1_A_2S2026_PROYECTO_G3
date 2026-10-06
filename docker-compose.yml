@@ -20,6 +20,10 @@ services:
       - POSTGRES_USER=odoo
     volumes:
       - odoo-db-data:/var/lib/postgresql/data
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "8025:8025"
 
 volumes:
   odoo-web-data:

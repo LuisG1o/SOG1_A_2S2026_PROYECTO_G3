@@ -78,3 +78,24 @@ Para que todos los productos e iconos muestren sus fotografías en la interfaz w
    * **Correo:** `normacanu77@gmail.com`
    * **Password:** `Admin2026*`
 4. Verifica en **Inventario -> Productos** que los 30 productos (`RA-001` a `RA-030`) aparezcan con sus fotografías y existencias, así como los proveedores en **Compra** y los clientes en **Ventas**.
+
+---
+
+## Base de datos final de la Fase 2
+
+Los archivos `backup_raiz_artesanal_final.dump` y `filestore_final.tar.gz` contienen el sistema completo de la Fase 2: datos maestros, compras (BO00002, P00025 a P00028), ventas (S00025 y S00026), factura INV/2026/00005, CRM con 5 oportunidades y las 2 campañas de correo enviadas. La empresa está configurada como **Raíz Artesanal** con su logotipo.
+
+Se restaura con los mismos pasos 2 y 3 anteriores, usando estos archivos:
+
+```bash
+sudo docker compose up -d
+sudo docker cp backup_raiz_artesanal_final.dump odoo-erp_db_1:/tmp/final.dump
+sudo docker exec -t odoo-erp_db_1 dropdb -U odoo --if-exists raiz_artesanal_db
+sudo docker exec -t odoo-erp_db_1 createdb -U odoo raiz_artesanal_db
+sudo docker exec -t odoo-erp_db_1 pg_restore -U odoo -d raiz_artesanal_db --no-owner /tmp/final.dump
+tar -xzf filestore_final.tar.gz
+sudo docker cp filestore_backup/. odoo-erp_web_1:/var/lib/odoo/filestore/
+sudo docker exec -u root -t odoo-erp_web_1 chown -R odoo:odoo /var/lib/odoo/filestore
+```
+
+Los correos de las campañas se envían al servidor de pruebas **Mailpit** (servicio `mailpit` del `docker-compose.yml`). La bandeja se revisa en `http://localhost:8025`.
