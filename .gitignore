@@ -1,0 +1,11 @@
+# Filestore de Odoo descomprimido (se comparte comprimido en filestore_backup.tar.gz)
+filestore_backup/
+
+# Archivos temporales de Word y Excel
+~$*
+*.tmp
+
+# Archivos del sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store
