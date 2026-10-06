@@ -1,0 +1,14 @@
+
+<svg xmlns='http://www.w3.org/2000/svg' width='900' height='360' viewBox='0 0 900 360'>
+  <rect width='900' height='360' fill='#FFFFFF'/>
+  <g transform='translate(170,175)'>
+    <path d='M-40,-120 L40,-120 L35,-100 C95,-80 110,0 80,60 C60,100 -60,100 -80,60 C-110,0 -95,-80 -35,-100 Z' fill='#B5532E'/>
+    <rect x='-48' y='-132' width='96' height='16' rx='6' fill='#4A2E1F'/>
+    <polygon points='-78,-20 -65.0,-33.0 -52,-20 -65.0,-7.0' fill='#E0A526'/><polygon points='-52,-20 -39.0,-33.0 -26,-20 -39.0,-7.0' fill='#FFFFFF'/><polygon points='-26,-20 -13.0,-33.0 0,-20 -13.0,-7.0' fill='#E0A526'/><polygon points='0,-20 13.0,-33.0 26,-20 13.0,-7.0' fill='#FFFFFF'/><polygon points='26,-20 39.0,-33.0 52,-20 39.0,-7.0' fill='#E0A526'/><polygon points='52,-20 65.0,-33.0 78,-20 65.0,-7.0' fill='#FFFFFF'/>
+    <rect x='-88' y='35' width='176' height='7' fill='#E0A526'/><rect x='-80' y='50' width='160' height='4' fill='#4A2E1F'/>
+    <path d='M0,92 C-5,115 -30,125 -45,140 M0,92 C0,115 0,130 0,145 M0,92 C5,115 30,125 45,140' stroke='#1F6F5C' stroke-width='6' fill='none' stroke-linecap='round'/>
+  </g>
+  <text x='330' y='175' font-family='Playfair Display' font-weight='700' font-size='80' fill='#4A2E1F'>Raíz Artesanal</text>
+  <rect x='334' y='200' width='520' height='4' fill='#1F6F5C'/>
+  <text x='334' y='245' font-family='Montserrat' font-weight='600' font-size='24' letter-spacing='5' fill='#1F6F5C'>BARRO · TEXTIL · JADE · CUERO</text>
+</svg>
