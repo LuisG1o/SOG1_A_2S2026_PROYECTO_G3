@@ -99,3 +99,36 @@ sudo docker exec -u root -t odoo-erp_web_1 chown -R odoo:odoo /var/lib/odoo/file
 ```
 
 Los correos de las campañas se envían al servidor de pruebas **Mailpit** (servicio `mailpit` del `docker-compose.yml`). La bandeja se revisa en `http://localhost:8025`.
+---
+
+## Base de datos de la Fase 3 (tienda en línea)
+
+`Base_de_Datos/backup_raiz_artesanal_fase3.dump` y `Base_de_Datos/filestore_fase3.tar.gz` contienen todo lo anterior más la tienda en línea: sitio web publicado, 30 productos en 6 categorías, métodos de pago, 5 ventas en línea (S00027 a S00031) con sus facturas y entregas, oportunidades en el CRM, conteo físico de inventario y la encuesta de satisfacción respondida.
+
+```bash
+sudo docker compose up -d
+sudo docker cp Base_de_Datos/backup_raiz_artesanal_fase3.dump odoo-erp_db_1:/tmp/fase3.dump
+sudo docker exec -t odoo-erp_db_1 dropdb -U odoo --if-exists raiz_artesanal_db
+sudo docker exec -t odoo-erp_db_1 createdb -U odoo raiz_artesanal_db
+sudo docker exec -t odoo-erp_db_1 pg_restore -U odoo -d raiz_artesanal_db --no-owner /tmp/fase3.dump
+tar -xzf Base_de_Datos/filestore_fase3.tar.gz
+sudo docker cp filestore_backup/. odoo-erp_web_1:/var/lib/odoo/filestore/
+sudo docker exec -u root -t odoo-erp_web_1 chown -R odoo:odoo /var/lib/odoo/filestore
+sudo docker restart odoo-erp_web_1
+```
+
+- Tienda: `http://localhost:8069/shop`
+- Para importar archivos Excel desde Odoo, instalar una vez la librería en el contenedor: `sudo docker exec -u root odoo-erp_web_1 pip3 install openpyxl` y reiniciarlo.
+- Los KPIs se pueden recalcular en cualquier momento con `python Fase_3/KPIs/verificar_kpis.py`.
+
+### Clientes de prueba de la tienda
+
+| Cliente | Usuario | Contraseña |
+|---|---|---|
+| Andrea Lucía Barrios | andrea.barrios@ejemplo.gt | RaizPrueba2026! |
+| Diego Alejandro Ramírez | diego.ramirez@ejemplo.gt | RaizPrueba2026! |
+| Gabriela Sofía Herrera | gabriela.herrera@ejemplo.gt | RaizPrueba2026! |
+| Mariana Ruiz Estrada | mariana.ruiz@ejemplo.gt | RaizPrueba2026! |
+| Lucía Morales (Hotel Real Santa Catalina) | lucia.morales@hotelsantacatalina.gt | RaizPrueba2026! |
+
+Para pagar con tarjeta en la tienda se usa el método de prueba con cualquier número, por ejemplo `4111 1111 1111 1111`.
