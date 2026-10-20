@@ -31,11 +31,12 @@
 | Carpeta / archivo | Descripción |
 |-------------------|-------------|
 | `Entregables/` | Documentos entregados en cada fase |
-| `Documento_Final/` | Informe consolidado de la Fase 2 (Word y PDF) |
-| `Datos_Maestros/` | Plantillas Excel de productos, clientes y proveedores y su manual de carga |
-| `Compras_Abastecimiento/` | Manual y capturas del ciclo de compras (requisición, orden de compra y recepción) |
-| `Cotizaciones_y_Reportes/` | Manuales y capturas de cotizaciones, ventas, informes de inventario y medición de logros |
-| `CRM_Correos/` | Manual y capturas del pipeline CRM, plantillas de correo y campañas |
+| `Fase_2/Documento_Final/` | Informe consolidado de la Fase 2 (Word y PDF) |
+| `Fase_2/Datos_Maestros/` | Plantillas Excel de productos, clientes y proveedores y su manual de carga |
+| `Fase_2/Compras_Abastecimiento/` | Manual y capturas del ciclo de compras (requisición, orden de compra y recepción) |
+| `Fase_2/Cotizaciones_y_Reportes/` | Manuales y capturas de cotizaciones, ventas, informes de inventario y medición de logros |
+| `Fase_2/CRM_Correos/` | Manual y capturas del pipeline CRM, plantillas de correo y campañas |
+| `Fase_3/` | Trabajo de la Fase 3: tienda en línea, integración, BI y documento final |
 | `Base_de_Datos/` | Respaldos de la base de datos de Odoo y del filestore (imágenes) |
 | `imagenes/` | Fotografías de los productos y logotipo de la marca |
 | `docker-compose.yml` | Servicios de Odoo 16, PostgreSQL 15 y servidor de correo de pruebas |
