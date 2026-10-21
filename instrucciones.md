@@ -132,3 +132,32 @@ sudo docker restart odoo-erp_web_1
 | Lucía Morales (Hotel Real Santa Catalina) | lucia.morales@hotelsantacatalina.gt | RaizPrueba2026! |
 
 Para pagar con tarjeta en la tienda se usa el método de prueba con cualquier número, por ejemplo `4111 1111 1111 1111`.
+
+---
+
+## Business Intelligence (Metabase)
+
+Los reportes de BI se ejecutan en Metabase, conectado directamente a la base `raiz_artesanal_db` mediante las vistas del esquema `bi` (`Fase_3/BI/sql/vistas_bi.sql`). Metabase guarda sus preguntas y tableros en la base `metabase`, respaldada en `Base_de_Datos/metabase_fase3.dump`.
+
+Después de restaurar la base de la Fase 3:
+
+```bash
+# 1. Usuario de solo lectura para BI (definir una contraseña propia)
+sudo docker exec -it odoo-erp_db_1 psql -U odoo -d raiz_artesanal_db -c "CREATE ROLE bi_lectura LOGIN PASSWORD '<contraseña>';"
+
+# 2. Vistas y permisos del esquema bi
+sudo docker cp Fase_3/BI/sql/vistas_bi.sql odoo-erp_db_1:/tmp/vistas_bi.sql
+sudo docker exec -t odoo-erp_db_1 psql -U odoo -d raiz_artesanal_db -f /tmp/vistas_bi.sql
+
+# 3. Base de Metabase con los tableros
+sudo docker cp Base_de_Datos/metabase_fase3.dump odoo-erp_db_1:/tmp/metabase.dump
+sudo docker exec -t odoo-erp_db_1 createdb -U odoo metabase
+sudo docker exec -t odoo-erp_db_1 pg_restore -U odoo -d metabase --no-owner /tmp/metabase.dump
+
+# 4. Levantar Metabase
+sudo docker compose up -d metabase
+```
+
+5. Ingresar a `http://localhost:3000` con el usuario administrador del equipo.
+6. En **Configuración → Bases de datos → Raíz Artesanal - Odoo** escribir la contraseña del usuario `bi_lectura` y guardar. Por seguridad, el respaldo de Metabase no incluye esa contraseña.
+7. Abrir la colección **Raíz Artesanal – BI**: Reporte de Inventario, Reporte de Ventas y Tablero de Control Gerencial.
