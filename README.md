@@ -39,18 +39,20 @@
 | `Fase_2/CRM_Correos/` | Manual y capturas del pipeline CRM, plantillas de correo y campañas |
 | `Fase_3/Tienda_en_Linea/` | Manual y capturas de la tienda en línea y su integración con ventas, inventario, facturación y CRM |
 | `Fase_3/KPIs/` | Medición de los KPIs con datos de Odoo y script para verificarlos |
+| `Fase_3/BI/` | Reportes de inventario y ventas en Metabase, vistas SQL del esquema bi y manual |
 | `Fase_3/Manual_Tecnico/` | Manual técnico, diagramas de arquitectura y del flujo de integración |
 | `Fase_3/Conclusiones/` | Evaluación de los objetivos SMART, conclusiones y propuesta de escalabilidad |
 | `Fase_3/Documento_Final/` | Informe final consolidado de la Fase 3 (Word y PDF) |
 | `Base_de_Datos/` | Respaldos de la base de datos de Odoo y del filestore (imágenes) |
 | `imagenes/` | Fotografías de los productos y logotipo de la marca |
-| `docker-compose.yml` | Servicios de Odoo 16, PostgreSQL 15 y servidor de correo de pruebas |
+| `docker-compose.yml` | Servicios de Odoo 16, PostgreSQL 15, Metabase y servidor de correo de pruebas |
 | `instrucciones.md` | Pasos para levantar el sistema y restaurar la base de datos |
 
 ## Tecnologías
 
 - **ERP y CRM:** Odoo 16 Community (Ventas, Compras, Inventario, Facturación, Acuerdos de compra, CRM, Marketing por correo y Encuestas)
 - **Comercio electrónico:** Sitio web y tienda en línea de Odoo
+- **Business Intelligence:** Metabase
 - **Base de datos:** PostgreSQL 15
 - **Infraestructura:** Docker y Docker Compose
 - **Correo de pruebas:** Mailpit
@@ -63,6 +65,7 @@ docker compose up -d
 
 - Odoo: http://localhost:8069 (base `raiz_artesanal_db`)
 - Tienda en línea: http://localhost:8069/shop
+- Reportes de BI (Metabase): http://localhost:3000
 - Bandeja de correos de prueba: http://localhost:8025
 
 Para cargar los datos del proyecto, seguir [`instrucciones.md`](instrucciones.md).
