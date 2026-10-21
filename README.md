@@ -39,6 +39,9 @@
 | `Fase_2/CRM_Correos/` | Manual y capturas del pipeline CRM, plantillas de correo y campañas |
 | `Fase_3/Tienda_en_Linea/` | Manual y capturas de la tienda en línea y su integración con ventas, inventario, facturación y CRM |
 | `Fase_3/KPIs/` | Medición de los KPIs con datos de Odoo y script para verificarlos |
+| `Fase_3/Manual_Tecnico/` | Manual técnico, diagramas de arquitectura y del flujo de integración |
+| `Fase_3/Conclusiones/` | Evaluación de los objetivos SMART, conclusiones y propuesta de escalabilidad |
+| `Fase_3/Documento_Final/` | Informe final consolidado de la Fase 3 (Word y PDF) |
 | `Base_de_Datos/` | Respaldos de la base de datos de Odoo y del filestore (imágenes) |
 | `imagenes/` | Fotografías de los productos y logotipo de la marca |
 | `docker-compose.yml` | Servicios de Odoo 16, PostgreSQL 15 y servidor de correo de pruebas |
