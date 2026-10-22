@@ -25,7 +25,7 @@
 |------|---------|-----------|
 | Fase 1 – Planificación y diagnóstico | [`Entregables/Fase 1`](Entregables/Fase%201) | Informe ejecutivo, manuales de instalación del ERP y CRM, diagrama del ciclo de compra, presentación y enlace del video |
 | Fase 2 – Configuración y operación base | [`Entregables/Fase 2`](Entregables/Fase%202) | Informe consolidado, manuales de usuario, medición de logros, archivos de datos y enlace del video |
-| Fase 3 – Tienda en línea, integración y resultados | [`Fase_3`](Fase_3) | En desarrollo |
+| Fase 3 – Tienda en línea, integración y resultados | [`Entregables/Fase 3`](Entregables/Fase%203) | Informe final, manual técnico, manuales de usuario, reportes de BI, medición de KPIs, conclusiones y enlace del video |
 
 ## Estructura del repositorio
 
@@ -38,6 +38,7 @@
 | `Fase_2/Cotizaciones_y_Reportes/` | Manuales y capturas de cotizaciones, ventas, informes de inventario y medición de logros |
 | `Fase_2/CRM_Correos/` | Manual y capturas del pipeline CRM, plantillas de correo y campañas |
 | `Fase_3/Tienda_en_Linea/` | Manual y capturas de la tienda en línea y su integración con ventas, inventario, facturación y CRM |
+| `Fase_3/Campana_Tienda/` | Manual y capturas de la campaña de correo segmentada que anuncia la tienda en línea |
 | `Fase_3/KPIs/` | Medición de los KPIs con datos de Odoo y script para verificarlos |
 | `Fase_3/BI/` | Reportes de inventario y ventas en Metabase, vistas SQL del esquema bi y manual |
 | `Fase_3/Manual_Tecnico/` | Manual técnico, diagramas de arquitectura y del flujo de integración |
