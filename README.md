@@ -23,9 +23,9 @@
 
 | Fase | Carpeta | Contenido |
 |------|---------|-----------|
-| Fase 1 – Planificación y diagnóstico | [`Entregables/Fase 1`](Entregables/Fase%201) | Informe ejecutivo, manuales de instalación del ERP y CRM, diagrama del ciclo de compra, presentación y enlace del video |
-| Fase 2 – Configuración y operación base | [`Entregables/Fase 2`](Entregables/Fase%202) | Informe consolidado, manuales de usuario, medición de logros, archivos de datos y enlace del video |
-| Fase 3 – Tienda en línea, integración y resultados | [`Entregables/Fase 3`](Entregables/Fase%203) | Informe final, manual técnico, manuales de usuario, reportes de BI, medición de KPIs, conclusiones y enlace del video |
+| Fase 1 – Planificación y diagnóstico | [`Entregables/Fase_1`](Entregables/Fase_1) | Informe ejecutivo, manuales de instalación del ERP y CRM, diagrama del ciclo de compra, presentación y enlace del video |
+| Fase 2 – Configuración y operación base | [`Entregables/Fase_2`](Entregables/Fase_2) | Informe consolidado, manuales de usuario, medición de logros, archivos de datos y enlace del video |
+| Fase 3 – Tienda en línea, integración y resultados | [`Entregables/Fase_3`](Entregables/Fase_3) | Informe final, manual técnico, manuales de usuario, reportes de BI, medición de KPIs, conclusiones y enlace del video |
 
 ## Estructura del repositorio
 
