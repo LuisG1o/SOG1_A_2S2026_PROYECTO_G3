@@ -44,7 +44,7 @@
 | `Fase_3/Manual_Tecnico/` | Manual técnico, diagramas de arquitectura y del flujo de integración |
 | `Fase_3/Conclusiones/` | Evaluación de los objetivos SMART, conclusiones y propuesta de escalabilidad |
 | `Fase_3/Documento_Final/` | Informe final consolidado de la Fase 3 (Word y PDF) |
-| `Base_de_Datos/` | Respaldos de la base de datos de Odoo y del filestore (imágenes) |
+| `Base_de_Datos/` | Respaldo final de la base de datos de Odoo, del filestore (imágenes) y de los tableros de Metabase |
 | `imagenes/` | Fotografías de los productos y logotipo de la marca |
 | `docker-compose.yml` | Servicios de Odoo 16, PostgreSQL 15, Metabase y servidor de correo de pruebas |
 | `instrucciones.md` | Pasos para levantar el sistema y restaurar la base de datos |
@@ -61,7 +61,7 @@
 ## Ejecución
 
 ```bash
-docker compose up -d
+docker compose -p odoo-erp up -d db web mailpit
 ```
 
 - Odoo: http://localhost:8069 (base `raiz_artesanal_db`)
@@ -69,4 +69,4 @@ docker compose up -d
 - Reportes de BI (Metabase): http://localhost:3000
 - Bandeja de correos de prueba: http://localhost:8025
 
-Para cargar los datos del proyecto, seguir [`instrucciones.md`](instrucciones.md).
+Para cargar los datos del proyecto y levantar Metabase, seguir [`instrucciones.md`](instrucciones.md).
