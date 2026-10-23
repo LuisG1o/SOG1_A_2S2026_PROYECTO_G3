@@ -1,125 +1,70 @@
-# Guía de Restauración de Base de Datos e Imágenes - Raíz Artesanal ERP (Fase 2)
+# Guía de Instalación y Restauración - Raíz Artesanal
 
-Este respaldo contiene los **30 productos catalogados**, **imágenes**, existencias iniciales en almacén, **6 proveedores** y **7 clientes** registrados para la empresa **Raíz Artesanal**.
+Este procedimiento levanta el sistema completo del proyecto (Fases 1, 2 y 3) a partir de los respaldos de la carpeta `Base_de_Datos`:
 
-> **Nota importante:** Este procedimiento inyecta la base de datos directamente en PostgreSQL y restaura el almacenamiento de archivos, por lo que **no solicita el Master Password** de Odoo en ningún momento.
+| Archivo | Contenido |
+|---|---|
+| `backup_raiz_artesanal_fase3.dump` | Base de datos de Odoo: 30 productos, proveedores, clientes, compras, ventas, facturas, CRM, campañas de correo, tienda en línea con 5 ventas en línea (S00027 a S00031), conteo físico de inventario y encuesta de satisfacción |
+| `filestore_fase3.tar.gz` | Imágenes de los productos, logotipo y adjuntos |
+| `metabase_fase3.dump` | Preguntas y tableros de Business Intelligence en Metabase |
 
----
-
-## Prerrequisitos
-
-1. Tener los contenedores de Docker encendidos.
-2. Verifica en la terminal de tu Ubuntu Server los nombres exactos de tus dos contenedores ejecutando:
-   ```bash
-   sudo docker ps
-   ```
-   *(Identifica en la columna `NAMES` cómo se llama tu contenedor de **postgres** [ej. `odoo-erp_db_1`] y tu contenedor de **odoo** [ej. `odoo-erp_web_1` o su `CONTAINER ID`]).*
+> **Nota:** la base se carga directamente en PostgreSQL, por lo que no se solicita el Master Password de Odoo.
 
 ---
 
-## Procedimiento de Restauración (Desde Ubuntu Server)
-
-### 1. Clonar el repositorio
-
-Entra a la terminal de tu máquina virtual Ubuntu Server y descarga los archivos del repositorio:
+## 1. Clonar el repositorio y levantar los contenedores
 
 ```bash
 cd ~
 git clone https://github.com/LuisG1o/SOG1_A_2S2026_PROYECTO_G3.git
 cd SOG1_A_2S2026_PROYECTO_G3
+sudo docker compose -p odoo-erp up -d db web mailpit
+sudo docker ps
 ```
 
----
-
-### 2. Restaurar la Base de Datos en PostgreSQL
-
-1. Copia el archivo `.dump` dentro del contenedor de base de datos:
-   ```bash
-   sudo docker cp Base_de_Datos/backup_raiz_artesanal.dump odoo-erp_db_1:/tmp/backup_raiz_artesanal.dump
-   ```
-
-2. Crea la base de datos de destino `raiz_artesanal_db`:
-   ```bash
-   sudo docker exec -t odoo-erp_db_1 createdb -U odoo raiz_artesanal_db
-   ```
-   > *(Si ya tenías una base de datos con ese nombre, elimínala antes con: `sudo docker exec -t odoo-erp_db_1 dropdb -U odoo raiz_artesanal_db`)*
-
-3. Ejecuta la restauración binaria:
-   ```bash
-   sudo docker exec -t odoo-erp_db_1 pg_restore -U odoo -d raiz_artesanal_db -v /tmp/backup_raiz_artesanal.dump
-   ```
-   *(Es normal que al final muestre `WARNING: errors ignored on restore` por permisos del rol postgres; todas las tablas se cargan al 100%).*
+En la columna `NAMES` se identifican el contenedor de PostgreSQL (`odoo-erp_db_1` u `odoo-erp-db-1`, según la versión de Docker Compose) y el de Odoo (`odoo-erp_web_1` u `odoo-erp-web-1`). Los comandos siguientes usan los primeros nombres; se reemplazan si en el equipo aparecen los otros.
 
 ---
 
-### 3. Restaurar las Imágenes del Catálogo (Filestore)
-
-Para que todos los productos e iconos muestren sus fotografías en la interfaz web:
-
-1. Descomprime el archivo de imágenes:
-   ```bash
-   tar -xzf Base_de_Datos/filestore_backup.tar.gz
-   ```
-
-2. Copia la carpeta de imágenes dentro del contenedor web de Odoo (reemplaza `odoo-erp_web_1` por el nombre o `CONTAINER ID` de tu contenedor de Odoo que viste en `sudo docker ps`[cite: 6, 8]) y asigna permisos:
-   ```bash
-   sudo docker cp filestore_backup/. odoo-erp_web_1:/var/lib/odoo/filestore/
-   sudo docker exec -u root -t odoo-erp_web_1 chown -R odoo:odoo /var/lib/odoo/filestore
-   ```
-
----
-
-### 4. Acceso al Sistema
-
-1. Ingresa desde el navegador web a:  
-   `http://localhost:8069/web/database/selector`
-2. Selecciona la base de datos **`raiz_artesanal_db`**.
-3. Inicia sesión con las credenciales de administrador:
-   * **Correo:** `normacanu77@gmail.com`
-   * **Password:** `Admin2026*`
-4. Verifica en **Inventario -> Productos** que los 30 productos (`RA-001` a `RA-030`) aparezcan con sus fotografías y existencias, así como los proveedores en **Compra** y los clientes en **Ventas**.
-
----
-
-## Base de datos final de la Fase 2
-
-Los archivos `Base_de_Datos/backup_raiz_artesanal_final.dump` y `Base_de_Datos/filestore_final.tar.gz` contienen el sistema completo de la Fase 2: datos maestros, compras (BO00002, P00025 a P00028), ventas (S00025 y S00026), factura INV/2026/00005, CRM con 5 oportunidades y las 2 campañas de correo enviadas. La empresa está configurada como **Raíz Artesanal** con su logotipo.
-
-Se restaura con los mismos pasos 2 y 3 anteriores, usando estos archivos:
+## 2. Restaurar la base de datos de Odoo
 
 ```bash
-sudo docker compose up -d
-sudo docker cp Base_de_Datos/backup_raiz_artesanal_final.dump odoo-erp_db_1:/tmp/final.dump
-sudo docker exec -t odoo-erp_db_1 dropdb -U odoo --if-exists raiz_artesanal_db
-sudo docker exec -t odoo-erp_db_1 createdb -U odoo raiz_artesanal_db
-sudo docker exec -t odoo-erp_db_1 pg_restore -U odoo -d raiz_artesanal_db --no-owner /tmp/final.dump
-tar -xzf Base_de_Datos/filestore_final.tar.gz
-sudo docker cp filestore_backup/. odoo-erp_web_1:/var/lib/odoo/filestore/
-sudo docker exec -u root -t odoo-erp_web_1 chown -R odoo:odoo /var/lib/odoo/filestore
-```
-
-Los correos de las campañas se envían al servidor de pruebas **Mailpit** (servicio `mailpit` del `docker-compose.yml`). La bandeja se revisa en `http://localhost:8025`.
----
-
-## Base de datos de la Fase 3 (tienda en línea)
-
-`Base_de_Datos/backup_raiz_artesanal_fase3.dump` y `Base_de_Datos/filestore_fase3.tar.gz` contienen todo lo anterior más la tienda en línea: sitio web publicado, 30 productos en 6 categorías, métodos de pago, 5 ventas en línea (S00027 a S00031) con sus facturas y entregas, oportunidades en el CRM, conteo físico de inventario y la encuesta de satisfacción respondida.
-
-```bash
-sudo docker compose up -d
 sudo docker cp Base_de_Datos/backup_raiz_artesanal_fase3.dump odoo-erp_db_1:/tmp/fase3.dump
 sudo docker exec -t odoo-erp_db_1 dropdb -U odoo --if-exists raiz_artesanal_db
 sudo docker exec -t odoo-erp_db_1 createdb -U odoo raiz_artesanal_db
 sudo docker exec -t odoo-erp_db_1 pg_restore -U odoo -d raiz_artesanal_db --no-owner /tmp/fase3.dump
+```
+
+Es normal que al final aparezca `WARNING: errors ignored on restore` por permisos del rol de PostgreSQL; las tablas se cargan completas.
+
+---
+
+## 3. Restaurar las imágenes (filestore)
+
+```bash
 tar -xzf Base_de_Datos/filestore_fase3.tar.gz
 sudo docker cp filestore_backup/. odoo-erp_web_1:/var/lib/odoo/filestore/
 sudo docker exec -u root -t odoo-erp_web_1 chown -R odoo:odoo /var/lib/odoo/filestore
 sudo docker restart odoo-erp_web_1
 ```
 
-- Tienda: `http://localhost:8069/shop`
-- Para importar archivos Excel desde Odoo, instalar una vez la librería en el contenedor: `sudo docker exec -u root odoo-erp_web_1 pip3 install openpyxl` y reiniciarlo.
-- Los KPIs se pueden recalcular en cualquier momento con `python Fase_3/KPIs/verificar_kpis.py`.
+---
+
+## 4. Acceso al sistema
+
+| Servicio | Dirección |
+|---|---|
+| Odoo (ERP y CRM) | `http://localhost:8069` (base `raiz_artesanal_db`) |
+| Tienda en línea | `http://localhost:8069/shop` |
+| Bandeja de correos de prueba (Mailpit) | `http://localhost:8025` |
+| Business Intelligence (Metabase) | `http://localhost:3000` |
+
+Usuario administrador de Odoo:
+
+* **Correo:** `normacanu77@gmail.com`
+* **Password:** `Admin2026*`
+
+En **Inventario → Productos** deben aparecer los 30 productos (`RA-001` a `RA-030`) con sus fotografías y existencias.
 
 ### Clientes de prueba de la tienda
 
@@ -135,29 +80,35 @@ Para pagar con tarjeta en la tienda se usa el método de prueba con cualquier n�
 
 ---
 
-## Business Intelligence (Metabase)
+## 5. Business Intelligence (Metabase)
 
-Los reportes de BI se ejecutan en Metabase, conectado directamente a la base `raiz_artesanal_db` mediante las vistas del esquema `bi` (`Fase_3/BI/sql/vistas_bi.sql`). Metabase guarda sus preguntas y tableros en la base `metabase`, respaldada en `Base_de_Datos/metabase_fase3.dump`.
-
-Después de restaurar la base de la Fase 3:
+Metabase consulta la base `raiz_artesanal_db` mediante las vistas del esquema `bi` (`Fase_3/BI/sql/vistas_bi.sql`) y guarda sus preguntas y tableros en la base `metabase`.
 
 ```bash
-# 1. Usuario de solo lectura para BI (definir una contraseña propia)
+# Usuario de solo lectura para BI (definir una contraseña propia)
 sudo docker exec -it odoo-erp_db_1 psql -U odoo -d raiz_artesanal_db -c "CREATE ROLE bi_lectura LOGIN PASSWORD '<contraseña>';"
 
-# 2. Vistas y permisos del esquema bi
+# Vistas y permisos del esquema bi
 sudo docker cp Fase_3/BI/sql/vistas_bi.sql odoo-erp_db_1:/tmp/vistas_bi.sql
 sudo docker exec -t odoo-erp_db_1 psql -U odoo -d raiz_artesanal_db -f /tmp/vistas_bi.sql
 
-# 3. Base de Metabase con los tableros
+# Base de Metabase con los tableros
 sudo docker cp Base_de_Datos/metabase_fase3.dump odoo-erp_db_1:/tmp/metabase.dump
 sudo docker exec -t odoo-erp_db_1 createdb -U odoo metabase
 sudo docker exec -t odoo-erp_db_1 pg_restore -U odoo -d metabase --no-owner /tmp/metabase.dump
 
-# 4. Levantar Metabase
-sudo docker compose up -d metabase
+# Levantar Metabase
+sudo docker compose -p odoo-erp up -d metabase
 ```
 
-5. Ingresar a `http://localhost:3000` con el usuario administrador del equipo.
-6. En **Configuración → Bases de datos → Raíz Artesanal - Odoo** escribir la contraseña del usuario `bi_lectura` y guardar. Por seguridad, el respaldo de Metabase no incluye esa contraseña.
-7. Abrir la colección **Raíz Artesanal – BI**: Reporte de Inventario, Reporte de Ventas y Tablero de Control Gerencial.
+1. Ingresar a `http://localhost:3000` con el usuario administrador del equipo.
+2. En **Configuración → Bases de datos → Raíz Artesanal - Odoo** escribir la contraseña del usuario `bi_lectura` y guardar. Por seguridad, el respaldo de Metabase no incluye esa contraseña.
+3. Abrir la colección **Raíz Artesanal – BI**: Reporte de Inventario, Reporte de Ventas y Tablero de Control Gerencial.
+
+---
+
+## 6. Operación
+
+- Encender o apagar el sistema: `sudo docker compose -p odoo-erp start` / `sudo docker compose -p odoo-erp stop`. No usar `down`, porque elimina los contenedores.
+- Para importar archivos Excel desde Odoo, instalar una vez la librería en el contenedor: `sudo docker exec -u root odoo-erp_web_1 pip3 install openpyxl` y reiniciarlo.
+- Los KPIs se pueden recalcular en cualquier momento con `python Fase_3/KPIs/verificar_kpis.py`.
